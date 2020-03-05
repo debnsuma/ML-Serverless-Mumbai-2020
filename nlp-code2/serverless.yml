@@ -1,0 +1,38 @@
+
+service: parse-api 
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: us-east-1
+
+package:
+  exclude:
+    - .vscode/**
+    - node_modules/**
+    - __pycache__/**
+    - .ipynb_checkpoints/**
+    - (*).ipynb
+
+functions:
+  parse-text:
+    handler: handler.handle_request
+    memorySize: 1536
+    timeout: 30
+    events:
+      - http:
+          path: parse
+          method: post
+
+custom:
+  pythonRequirements:
+    dcokerizePip: true
+    slim: true
+    zip: true
+    noDeploy: []
+    useDownloadCache: true
+    useStaticCache: true
+
+plugins:
+  - serverless-python-requirements

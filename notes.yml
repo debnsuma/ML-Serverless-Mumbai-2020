@@ -1,0 +1,52 @@
+Deploy a serverless application 
+================================
+# sls create --template aws-python3 --name hello-service
+
+Deploying scikit-learn Regression Model 
+=======================================
+- Dataset: 
+    https://scikit-learn.org/stable/datasets/index.html#california-housing-dataset
+- Python Conda Environment:
+    # conda create -n scikit-dev python=3.6
+    # conda activate scikit-dev
+    # conda install scikit-learn=0.20.2 jupyter pylint rope
+    # conda list
+
+- Creating the serverless app after the Model training:
+    # sls create --template aws-python3 --name california-housing
+
+- Install the sls plugin:
+    # sls plugin install -n serverless-python-requirements@4.2.4
+        - To Upgrade: 
+        # npm i serverless to update 
+- Local Testing:
+    # sls invoke local --function predict-price --path event.json
+
+Deploying spacy-dev Model
+=========================
+
+- Python Conda Environment:
+    # conda create -n spacy-dev python=3.6 pylint rope jupyter
+    # conda activate spacy-dev
+    
+- Creating the serverless app :   
+    # sls create --template aws-python3 --name ner-api
+    # sls plugin install -n serverless-python-requirements@4.2.4
+
+- Creating the serverless app2:
+    # sls create --template aws-python3 --name parse-api
+    # sls plugin install -n serverless-python-requirements@4.2.4
+
+Image Classification Model
+==========================
+
+- Python Conda Environment:
+    # conda create -n keras-dev python=3.6 pylint rope jupyter
+    # conda activate keras-dev
+    # pip install tensorflow==1.12.0 keras==2.2.4 boto3 pillow
+    
+Sync with S3 Static Web Page
+============================
+
+# aws s3 sync /Users/debnsuma/AWS/code/ML-Serverless/web-gui-code/ s3://awsml-serverless-workshop --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
