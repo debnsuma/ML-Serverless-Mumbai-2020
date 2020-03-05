@@ -1,3 +1,25 @@
+Installation steps for Mac
+===========================
+
+- Install Ananconda: 
+- Install awscli2:
+    - configure awscli (awsclu configure)
+- Install pip3:
+    sudo apt-get install python3-distutils
+    wget https://bootstrap.pypa.io/get-pip.py
+    ls -l
+    sudo python3.6 get-pip.py
+    sudo pip3 install testresources
+- Install Serverless Framework with npm:
+    - npm install -g serverless
+        curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
+        sudo bash nodesource_setup.sh
+        sudo apt-get install -y nodejs
+        nodejs -v
+        npm -v
+- Configure sls:
+    - sls config credentials --provider aws --key <your key> --secret <your secret>
+
 Deploy a serverless application 
 ================================
 # sls create --template aws-python3 --name hello-service
@@ -7,6 +29,8 @@ Deploying scikit-learn Regression Model
 - Dataset: 
     https://scikit-learn.org/stable/datasets/index.html#california-housing-dataset
 - Python Conda Environment:
+    # mkdir scikit-code
+    # cd scikit-code
     # conda create -n scikit-dev python=3.6
     # conda activate scikit-dev
     # conda install scikit-learn=0.20.2 jupyter pylint rope
@@ -48,5 +72,27 @@ Image Classification Model
 Sync with S3 Static Web Page
 ============================
 
-# aws s3 sync /Users/debnsuma/AWS/code/ML-Serverless/web-gui-code/ s3://awsml-serverless-workshop --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+ 1. Create the S3 bucket (do not make public or setup as a webserver)
+ 2. Create a ticket in Palisade to Whitelist your S3 Bucket to be World Readable (otherwise it will flag security, a Sev2 ticket will be issued, your boss will be pinged, etc. - very annoying)
+    https://tiny.amazon.com/3jjhfumy/readable-s3-whitelist
+ 3. Once you have received email confirmation that the bucket has been whitelisted, then proceed to set it up for webist hosting 
+ 4. aws s3 sync ~/path/till/web-gui-code/ s3://<your bucket name> --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
+ 5. 
+    Ensure that the S3 bucket has:
+    - "Static website hosting" enabled (Properties > Static website hosting, index.html, 404.html)
+    - all files/folders are public (Edit Public Access Settings & Permissions > Access Control List (List objects))
+    - No Bucket Policy (under Permissions)
+    - CORS configuration is setup correctly as follows:
+    
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>https://s3.amazonaws.com</AllowedOrigin>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <ExposeHeader>ETag</ExposeHeader>
+    <ExposeHeader>x-amz-meta-custom-header</ExposeHeader>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
