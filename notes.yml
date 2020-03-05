@@ -69,30 +69,3 @@ Image Classification Model
     # conda activate keras-dev
     # pip install tensorflow==1.12.0 keras==2.2.4 boto3 pillow
     
-Sync with S3 Static Web Page
-============================
-
- 1. Create the S3 bucket (do not make public or setup as a webserver)
- 2. Create a ticket in Palisade to Whitelist your S3 Bucket to be World Readable (otherwise it will flag security, a Sev2 ticket will be issued, your boss will be pinged, etc. - very annoying)
-    https://tiny.amazon.com/3jjhfumy/readable-s3-whitelist
- 3. Once you have received email confirmation that the bucket has been whitelisted, then proceed to set it up for webist hosting 
- 4. aws s3 sync ~/path/till/web-gui-code/ s3://<your bucket name> --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-
- 5. 
-    Ensure that the S3 bucket has:
-    - "Static website hosting" enabled (Properties > Static website hosting, index.html, 404.html)
-    - all files/folders are public (Edit Public Access Settings & Permissions > Access Control List (List objects))
-    - No Bucket Policy (under Permissions)
-    - CORS configuration is setup correctly as follows:
-    
-<?xml version="1.0" encoding="UTF-8"?>
-<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-<CORSRule>
-    <AllowedOrigin>https://s3.amazonaws.com</AllowedOrigin>
-    <AllowedMethod>HEAD</AllowedMethod>
-    <AllowedMethod>GET</AllowedMethod>
-    <ExposeHeader>ETag</ExposeHeader>
-    <ExposeHeader>x-amz-meta-custom-header</ExposeHeader>
-    <AllowedHeader>*</AllowedHeader>
-</CORSRule>
-</CORSConfiguration>
